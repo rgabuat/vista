@@ -108,7 +108,7 @@ $('#subscriptions').on('submit',function(e){
 e.preventDefault();
 
     $.ajax({
-    url:'UserController/subscriber',
+    url:'<?= base_url('UserController/subscriber')?>',
     type:'POST',
     method:'POST',
     data:new FormData($(this)[0]),

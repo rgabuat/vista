@@ -125,5 +125,11 @@ class User_model extends CI_Model {
         return  $query->result();
     }
 
+    public function add_account($data)
+    {
+        $this->db->insert('tbl_users',$data);
+        return $this->db->insert_id();
+    }
+
 
 }

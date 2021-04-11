@@ -39,8 +39,23 @@ class Admin_model extends CI_Model {
     function add($results)
     {
 
-        $this->db->insert('tbl_brands',$results);
-        return $this->db->insert_id();
+        $this->db->select('*');
+        $this->db->from('tbl_brands');
+        $this->db->Where('brand_name',$results['brand_name']);
+        $count = $this->db->get();
+
+        if($count->num_rows() > 0)
+        {
+            return $count->num_rows();
+        }
+        else 
+        {   
+            $this->db->insert('tbl_brands',$results);
+            return $this->db->insert_id();
+        }
+
+
+        
         
     }
 
@@ -223,5 +238,13 @@ class Admin_model extends CI_Model {
         $this->db->set('notif_status',1);
         $this->db->where('id',$id);
         $this->db->update('tbl_bookings');
+    }
+
+    public function get_users()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_users');
+        $query = $this->db->get();
+        return $query->result();
     }
 }

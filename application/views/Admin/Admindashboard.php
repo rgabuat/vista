@@ -120,22 +120,34 @@ $username = $_SESSION['email'];
               <a href="javascript:void(0)" data-toggle="collapse" data-target="#submenu4" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                   <div class="d-flex w-100 justify-content-start align-items-center">
                       <span class="fas fa-sitemap fa-fw mr-3"></span>
-                      <span class="menu-collapsed">Booking</span>
+                      <span class="menu-collapsed">Reservations</span>
                       <span class="submenu-icon ml-auto"></span>
                   </div>
               </a>
-              <!-- Submenu content -->
+
               <div id='submenu4' class="collapse sidebar-submenu">
                   <a href="booking" class="list-group-item list-group-item-action bg-dark text-white">
-                      <span class="menu-collapsed">New booking</span>
+                      <span class="menu-collapsed">New Reservations</span>
                   </a>
                   <a href="confirmedbookings" class="list-group-item list-group-item-action bg-dark text-white">
-                      <span class="menu-collapsed">Confirmed booking</span>
+                      <span class="menu-collapsed">Confirmed Reservations</span>
                   </a>
                   <a href="declinedbookings" class="list-group-item list-group-item-action bg-dark text-white">
-                      <span class="menu-collapsed">Cancelled booking</span>
+                      <span class="menu-collapsed">Cancelled Reservations</span>
                   </a>
-              </div>               
+              </div>   
+              
+
+              <a href="users"  aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                  <div class="d-flex w-100 justify-content-start align-items-center">
+                      <span class="fas fa-users fa-fw mr-3"></span>
+                      <span class="menu-collapsed">Users</span>
+                      <span class="submenu-icon ml-auto"></span>
+                  </div>
+              </a>
+
+              <!-- Submenu content -->
+                          
               <?php endif ?>                    
               <!-- /END Separator -->
               <a href="<?= base_url()?>logout" class="bg-dark list-group-item list-group-item-action">

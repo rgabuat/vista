@@ -58,6 +58,7 @@ $route['home'] ='UserController/index';
 $route['viewcar/edit/(:num)'] = 'UserController/view_vehicle/$1';
 $route['reservation'] = 'UserController/reserverForm';
 $route['thankyou'] = '/UserController/thankyou';
+$route['register'] = '/UserController/register_form';
 
 
 // admin
@@ -72,6 +73,8 @@ $route['managevehicles'] ='AdminController/manage_vehicle';
 $route['booking'] ='AdminController/booking';
 $route['confirmedbookings'] ='AdminController/confirmed_booking';
 $route['declinedbookings'] ='AdminController/declined_booking';
+$route['users'] ='AdminController/users_view';
+
 // $route['view/info/(:num)'] = 'AdminController/view_formData/$1';
 // $route['view/info'] = 'AdminController/view_formData/';
 // $route['managebrands/edit/(:any)'] = 'AdminController/edit_brand/$1';

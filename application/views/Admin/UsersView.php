@@ -5,29 +5,28 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile</th>
                         <th>Email</th>
-                        <th>Vehicle</th>
-                        <th>From date</th>
-                        <th>To date</th>
-                        <th>Posting date</th>
-                        <th>Status</th>
+                        <th>Role</th>
+                        <th>Date Created</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php $count = 1?>
                 <?php foreach($results as $val):?>
-                   <tr>
+
+                    <tr>
                         <td><?= $count?></td>
-                        <td><?= $val['fname']?></td>
-                        <td><?= $val['email']?></td>
-                        <td><a href="<?= base_url('AdminController/admin_view_car/'.$val['vh_id'])?>" target="blank"><?= $val['cmodel']?></a></td>
-                        <td><?= $val['cdateform']?></td>
-                        <td><?= $val['cdateto']?></td>
-                        <td><?= $val['created_at']?></td>
-                        <td>pending</td>
-                        <td><a href="<?= base_url('AdminController/viewProfile/'.$val['id'])?>" target="blank" data-id="<?= $val['id']?>" data-brand="" class="fas fa-eye view-info"></a>
+                        <td><?= $val->first_name?></td>
+                        <td><?= $val->last_name?></td>
+                        <td><?= $val->mobile?></td>
+                        <td><?= $val->email?></td>
+                        <td><?= $val->role == 1  ? 'Admin' : 'User' ?></td>
+                        <td><?= $val->date_registered?></td>
+                        <td><a href="" target="blank" data-id="" data-brand="" class="fas fa-eye view-info"></a>
                         </td>
                         
                         <?php ?>
@@ -86,4 +85,7 @@
 
 <script>
  jQuery('#data_table').DataTable();
+
+
+
 </script>

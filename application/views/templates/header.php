@@ -212,7 +212,7 @@ span.far:hover
                 
                 <?php if(empty($_SESSION['is_logged_in'])) : ?>
                   <li class="nav-item">
-                        <a class="btn btn-login mx-1 " href="javascript:void(0);"data-toggle="modal" data-target="#regModal" >REGISTER</a>
+                        <a class="btn btn-login mx-1 " href="<?= base_url('register');?>" >REGISTER</a>
                   </li>
                 <?php endif ?>
               </ul>
@@ -251,7 +251,7 @@ span.far:hover
 </div>
 
     <!-- register login -->
-    <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -261,78 +261,8 @@ span.far:hover
         </button>
       </div>
       <div class="modal-body">
-      <fieldset aria-label="Step One" tabindex="-1" id="step-1">
-                    <form action="<?= base_url('UserController/registerAcc')?>" method="post" >
-                            <p></p>
-                            <div class="form-group">
-                                <label for="fname">First name </label><span class="text-danger">*</span>
-                                <input type="text" name="fname" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fname">Last name </label><span class="text-danger">*</span>
-                                <input type="text" name="lname" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fname">Mobile no. </label><span class="text-danger">*</span>
-                                <input type="number" name="mobile" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fname">Email address </label><span class="text-danger">*</span>
-                                <input type="text" name="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fname">Password </label><span class="text-danger">*</span>
-                                <input type="password" name="password" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fname">Confirm Password</label><span class="text-danger">*</span>
-                                <input type="password" name="repassword" class="form-control" required>
-                            </div>
-                        </fieldset>
-                        
-                        <fieldset aria-label="Step Two" tabindex="-1" id="step-2">
-                            <h2>Residing address</h2>
-                            <div class="form-group">
-                                <label for="email-address">House #</label>
-                                <input class="form-control" type="text" name="house_no" id="email-address" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone-number">Village name <span class="optional">(optional)</span></label>
-                                <input class="form-control" type="tel" name="village" >
-                            </div>
-                            <div class="form-group">
-                                <label for="phone-number">City <span class="optional">(optional)</span></label>
-                                <input class="form-control" type="tel" name="city" >
-                            </div>
-                            <div class="form-group">
-                                <label for="phone-number">State or province <span class="optional">(optional)</span></label>
-                                <input class="form-control" type="tel" name="state" >
-                            </div>
-                            <div class="form-group">
-                                <label for="phone-number">Zip code <span class="optional">(optional)</span></label>
-                                <input class="form-control" type="tel" name="zip" >
-                            </div>
-                        </fieldset>
-                        
-                        <fieldset aria-label="Step Three" tabindex="-1" id="step-3">
-                            <h2>Step Three</h2>
-                                <div class="form-group">
-                                    <label for="phone-number">Valid IDs (Drivers' license or passport) <span class="optional">(optional)</span></label>
-                                    <input class="form-control" type="file" name="valid_id" id="phone-number" >
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone-number">Proof of billing <span class="optional">(optional)</span></label>
-                                    <input class="form-control" type="file" name="billing" id="phone-number" >
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone-number">Latest photograph (selfie) <span class="optional">(optional)</span></label>
-                                    <input class="form-control" type="file" name="selfie" id="phone-number" >
-                                </div>
-                                <div class="form-group text-center">
-                                    <button class="btn btn-custom w-25" type="submit">Submit</button> 
-                                </div>
-                        </fieldset>
-                    </form>
+      <!-- <fieldset aria-label="Step One" tabindex="-1" id="step-1"> -->
+                    
       </div>
       <div class="modal-footer d-none">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

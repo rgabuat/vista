@@ -11,7 +11,9 @@ class UserController extends CI_Controller {
         $this->load->model('User_model');
         $this->load->library('session');
         $this->load->library('pagination');
+        $this->load->library('form_validation');
         $this->load->library(array('email'));
+        $this->load->helper('form');
     }
 
     public function send_email()
@@ -305,6 +307,105 @@ class UserController extends CI_Controller {
         $data = array();
         $this->load->view('templates/header');
 		$this->load->view('templates/Thankyou',$data);
+        $this->load->view('templates/footer');
+    }
+
+    // public function register_form()
+    // {
+    //     $data = array();
+    //     $this->load->view('templates/header');
+	// 	$this->load->view('RegisterForm',$data);
+    //     $this->load->view('templates/footer');
+    // }
+
+
+    
+    public function register_form()
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('fname', 'First Name', 'trim|required|min_length[5]|max_length[12]|xss_clean|is_unique[tbl_users.first_name]');
+        $this->form_validation->set_rules('lname', 'Last Name', 'trim|required|min_length[5]|max_length[12]|xss_clean');
+        $this->form_validation->set_rules('mobile', 'Mobile Number', 'required|regex_match[/^[0-9]{11}$/]');
+        $this->form_validation->set_rules('email', 'Email ID', 'required|trim|xss_clean|valid_email|is_unique[tbl_users.email]');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_rules('repassword', 'Confirm Password', 'required|matches[password]');
+        $this->form_validation->set_rules('valid_id', 'Valid ID', 'required');
+        $this->form_validation->set_rules('billing', 'Proof of Billing', 'required');
+        $this->form_validation->set_rules('selfie', 'Selfie', 'required');
+        $this->form_validation->set_message('is_unique', 'The %s is already taken');
+
+    
+        if($this->form_validation->run() == TRUE)
+        {
+            $param['reset'] = TRUE;
+            echo '<script>alert("Account successfully registered");</script>';
+
+            if(isset($_FILES['valid_id']['name']))
+            {
+                $path = $config['upload_path']  = 'uploads/imgs/';
+                $config['allowed_types']        = '*';
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                if ($this->upload->do_upload('valid_id'))
+                {
+                    $uploaded_img= $this->upload->data();
+                    $full_path = $path.$uploaded_img['file_name'];
+                    $data['valid_id'] = $full_path;
+                    // echo $full_path;
+                }
+            }
+
+            if(isset($_FILES['billing']['name']))
+            {
+                $path = $config['upload_path']  = 'uploads/imgs/';
+                $config['allowed_types']        = '*';
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('billing'))
+                {
+                    $uploaded_img= $this->upload->data();
+                    $full_path = $path.$uploaded_img['file_name'];
+                    $data['billing'] = $full_path;
+                }
+            }
+            
+            if(isset($_FILES['selfie']['name']))
+            {
+                $path = $config['upload_path']  = 'uploads/imgs/';
+                $config['allowed_types']        = '*';
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('selfie'))
+                {
+                    $uploaded_img= $this->upload->data();
+                    $full_path = $path.$uploaded_img['file_name'];
+                    $data['selfie'] = $full_path;
+                }
+            }
+
+            $data['first_name'] = $this->input->post('fname');
+            $data['last_name'] = $this->input->post('lname');
+            $data['mobile'] = $this->input->post('mobile');
+            $data['email']  = $this->input->post('email');
+            $data['password']=  md5($this->input->post('password'));
+            $data['house_no'] = $this->input->post('house_no');
+            $data['village'] = $this->input->post('village');
+            $data['city'] = $this->input->post('city');
+            $data['state'] =  $this->input->post('state');
+            $data['zip_code'] = $this->input->post('zip');
+
+            $this->User_model->add_account($data);
+
+        }
+        else 
+        {
+            $param['reset'] = FALSE;
+        }
+
+        $this->load->view('templates/header');
+        $this->load->view('RegisterForm',$param);
         $this->load->view('templates/footer');
     }
 

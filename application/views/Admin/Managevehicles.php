@@ -6,19 +6,20 @@
                     <tr>
                         <th >#</th>
                         <th >Brand Name</th>
-                        <th >Car Name</th>
+                        <th >Car Model</th>
                         <th>Creation Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php $count = 1?>
-                <?php foreach($result as $val):?>
+                <?php foreach($brands_result as $val):?>
+                
                    <tr row-id="<?= $count ?>" rows-id="<?= $val->id ?>">
                         <td><?= $count?></td>
                         <td><?= $val->brand_name?></td>
-                        <td><?= $val->name?></td>
-                        <td><?= $val->name?></td>
+                        <td><?= $val->model?></td>
+                        <td><?= $val->Created_at?></td>
                         <td>
                             <a href="<?=base_url('AdminController/admin_view_car/'.$val->id) ?>" target="blank" data-id="<?= $val->id?>" data-brand="<?= $val->brand_name?>" class="fas fa-eye vehicle-view"></a>
                             &nbsp;
@@ -26,7 +27,7 @@
                             <a href="<?=base_url('AdminController/edit_vehicle/'.$val->id) ?>" target="blank" data-id="<?= $val->id?>" data-brand="<?= $val->brand_name?>" class="fa fa-edit vehicle-edit"></a>
                             &nbsp;
                             &nbsp;
-                            <a href="javascript:void(0);" data-id="<?= $val->id?>" class="fa fa-times vehicle-delete" ></a>
+                            <a href="javascript:void(0);" data-id="<?= $val->id?>" class="fa fa-times delete-btn "></a>
                         </td>
                         <?php  ?>
                    </tr>
@@ -99,6 +100,33 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Vehicle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteForm" method="post">
+                        <input type="hidden" name="d_id" id="d_id">
+                            <h1>Delete this item</h1>
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-none">
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                    <button type="button" class="btn btn-primary del">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
 jQuery(document).ready( function() {
     jQuery('#car_table').DataTable();
@@ -108,10 +136,19 @@ jQuery(document).ready( function() {
     //     $('#v-edit-modal').modal('vehicle);
     // });
 
-    $(document).on('click','.vehicle-delete',function(e){
+    $(document).on('click','.delete-btn', function(e){
+        var brand_id_del = $(this).data('id');
+        var row = $(this).closest('tr');
+
+        $('#d_id').val(brand_id_del);
+        $('#deleteModal').modal('show');
+
+    });
+
+    $('#deleteForm').on('submit',function(e){
         e.preventDefault();
-        
-        let d_id = $(this).data('id');
+
+        let d_id = $('#d_id').val();
         let r_id = $(this).closest('tr');
 
         $.ajax({
@@ -121,40 +158,15 @@ jQuery(document).ready( function() {
             data:{d_id:d_id},
             success:function(data)
             { 
-                r_id.remove()
+
+                $('tr[rows-id="'+data+'"]').remove();
                 alertify.success('Item successfully deleted !');
+                $('#deleteModal').modal('hide');
             }
         })
         
-    })
+    });
 
-    // $(document).on('click','.vehicle-edit',function(e){
-    //     var v_id = $(this).data('id');
-    //     var v_brand = $(this).data('brand');
-    //     $.ajax({
-    //         type:'POST',
-    //         url:'AdminController/edit_vehicle',
-    //         data:{v_id:v_id},
-    //         dataType:'JSON',
-    //         success:function(data)
-    //         {
-                
-    //             $('#v_brand').html(data[0].brand_name);
-    //             $('#v_name').val(data[0].name);
-    //             $('#v_model').val(data[0].model);
-    //             $('#v_desc').val(data[0].description);
-    //             $('#v_ymodel').val(data[0].Model_Year);
-    //             $('#v_price').val(data[0].price);
-    //             $('#vh_id').val(v_id);
-    //             $('#vb_id').val(data[0].brand);
-    //             $('#v-edit-modal').modal('show');
-    //         },
-    //         error: function(jqXHR, textStatus, errorThrown){
-    //             alert('There is an error');    
-    //         }
-    //     });
-    //     return false;
-    // });
 
 });
 
