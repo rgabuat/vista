@@ -168,11 +168,14 @@ ul li
                 <img src="<?= base_url('assets/cars.png')?>" alt="" class="img-fluid">
             </div>
             <div class="card-body py-3 " style="background-image: url('<?= base_url('assets/key.png')?>'); background-repeat: no-repeat;">
-            <form id="goReserve" action="">
+            <form id="goReserve" action="" >
                 <div class="row">
                     <div class="col-md-12 col-lg-6">
                     </div>
                     <div class="col-md-12 col-lg-6 justify-content-end">
+                    <div id="message_cont" class="alert" role="alert"> 
+                        <p class="message text-center my-auto"></p>
+                    </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="id_start_datetime">Location:</label>
@@ -223,12 +226,12 @@ ul li
                         <div class="row">
                     <div class="col-12 text-center my-3">
                         <!-- <a href=""class="btn btn-custom text-uppercase w-25 submit_val">Reserve now</a> -->
-                        <input type="submit"  class="btn btn-custom text-uppercase w-50 sub_val" value="RESERVE NOW">
+                        <input type="submit"  disabled class="btn btn-custom text-uppercase w-50 res_btn" value="RESERVE NOW">
                     </div>
                     </div>
                     <input type="hidden" class="form-control days-here" placeholder="Show Days difference here" >
                     <input type="hidden" class="form-control time-here" placeholder="Show Hours difference here" >
-                    <input type="hidden" class="form-control total" placeholder="total" >
+                    <input type="hidden" class="form-control total" placeholder="total">
                     </div>
                     <div class="content">
                         <div class="price_day">
@@ -324,11 +327,12 @@ $('#datetimepicker7').datetimepicker({
 });
 $("#datetimepicker6").on("dp.change", function(e) {
     $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-     $('#datetimepicker7').data("DateTimePicker").date(e.date.add(6, 'hours'));
+    //  $('#datetimepicker7').data("DateTimePicker").date(e.date);
+
 });
 $("#datetimepicker7").on("dp.change", function(e) {
 
-  $('#datetimepicker6').data("DateTimePicker").maxDate(e.date.add(6,'hours'));
+  $('#datetimepicker6').data("DateTimePicker").maxDate(e.date.add(6,'hrs'));
 
     CalcDiff()
 });
@@ -394,17 +398,17 @@ var w_day = 24;
     //   }
       if(total >= 1 && total <= 6) 
       {   
-          var t_p_day = price3 * t_days + price1;
+          var t_p_day = price1 * t_days;
           $('.price-day').val(t_p_day);
       }
       if(total > 6 && total <= 12) 
       {   
-          var t_p_day = price3 * t_days + price2;
+          var t_p_day = price2 * t_days;
           $('.price-day').val(t_p_day);
       }
       if(total > 12 && total <= 24) 
       {   
-          var t_p_day = price3 * t_days + price3;
+          var t_p_day = price3 * t_days;
           $('.price-day').val(t_p_day);
       }
 
@@ -413,14 +417,28 @@ var w_day = 24;
 }
 $(document).ready(function() {
 
-        $('#goReserve').on('submit',function(e){
+        $('#datetimepicker7').on('dp.change',function(e){
             e.preventDefault();
 
-            let dataId =  $('#car_id').val();
+            date_validation();
+            
+            });
+        
+            $('#datetimepicker6').on('dp.change',function(e){
+            e.preventDefault();
+
+            date_validation();
+            
+            });
+
+
+
+            function date_validation()
+            {
+                let dataId =  $('#car_id').val();
             let data_startDate =  $('.date-from').val(); //date from
             let data_endDate =  $('.date_to').val(); //date to
 
-             
             $.ajax({
                 url:'<?=base_url('UserController/reserveValidation/')?>'+dataId,
                 type:'POST',
@@ -430,14 +448,19 @@ $(document).ready(function() {
                     data_endDate:data_endDate,
                 },
                 dataType:'JSON',
-                beforeSend:function()
-                {
-                    $('.preload').removeClass('d-none');
-                },
+                // beforeSend:function()
+                // {
+                   
+                // },
                 success:function(data)
                 {
                     if(data == 'true')
-                    {       
+                    {    
+                        $('#message_cont').removeClass('alert-danger');
+                        $('#message_cont').addClass('alert-success');
+                        $('.message').text('The car is available between the selected dates');
+                        $('.res_btn').attr('disabled',false);
+
                             let data_id = $('#car_id').val();
                             let data_name = $('.car_name').attr('data-name');
                             let data_model = $('.car_model').attr('data-model');
@@ -463,22 +486,38 @@ $(document).ready(function() {
                         };
                         let myObj_serialized = JSON.stringify(myObj);
                         sessionStorage.setItem('myObj',myObj_serialized);
-
-                        setTimeout(function(){ 
-                            window.location.href="<?= base_url('reservation');?>";
-                        }, 2000);
                         
                     }
                     else 
                     {
-                        $('.preload').addClass('d-none');
-                        alert('The car is booked between the selected dates');
+                        let html = '';
+                        let i = 0;
+                        
+                        $('#message_cont').removeClass('alert-success');
+                        $('#message_cont').addClass('alert-danger');
+                        $('.res_btn').attr('disabled',true);
+                        html += '<p>The car is not available between these dates <br></p>';
+
+                        for(i=0;i<data.length;i++)
+                        {
+                            html += '<span> From '+data[i].cdateform + ' To ' +data[i].cdateto+'</span><br>';
+                        }
+
+                        $('.message').html(html);
+                        console.log(data);
                     }
-                },
-    
+                }
+            });  
+        }
+
+        $('#goReserve').on('submit',function(e){
+            e.preventDefault();
+                $('.preload').removeClass('d-none');
+                setTimeout(function(){ 
+                    window.location.href="<?= base_url('reservation');?>";
+                }, 2000);
             });
-            
-        });
+
     // Swiper: Slider
         new Swiper('.swiper-container', {
             loop: true,

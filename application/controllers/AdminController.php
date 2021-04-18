@@ -600,5 +600,37 @@ class AdminController extends CI_Controller {
             }
         }
 
+
+        public function admin_view_user($id)
+        {
+ 
+            if(isset($this->session->userdata['email']))
+            {
+             $data = array();
+             $data['results'] = $this->Admin_model->get_single_user($id);
+             $this->load->view('Admin/template/header');
+             $this->load->view('Admin/template/AdminUserView',$data);
+             json_encode( $data['results']);
+             
+            }
+            else 
+            {
+                redirect('login');
+            }
+         
+        }
+
+        public function user_confirmation()
+        {
+            $id = $_POST['data_id'];
+            if($_POST['data_id'] != '')
+            {
+                $id = $_POST['data_id'];
+                $this->Admin_model->confirm_user($id);
+                echo json_encode($id);
+            }
+        }
+
+
 }
 

@@ -330,9 +330,10 @@ class UserController extends CI_Controller {
         $this->form_validation->set_rules('email', 'Email ID', 'required|trim|xss_clean|valid_email|is_unique[tbl_users.email]');
         $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('repassword', 'Confirm Password', 'required|matches[password]');
-        $this->form_validation->set_rules('valid_id', 'Valid ID', 'required');
-        $this->form_validation->set_rules('billing', 'Proof of Billing', 'required');
-        $this->form_validation->set_rules('selfie', 'Selfie', 'required');
+       
+        
+       
+       
         $this->form_validation->set_message('is_unique', 'The %s is already taken');
 
     
@@ -340,6 +341,8 @@ class UserController extends CI_Controller {
         {
             $param['reset'] = TRUE;
             echo '<script>alert("Account successfully registered");</script>';
+
+            
 
             if(isset($_FILES['valid_id']['name']))
             {
@@ -352,9 +355,14 @@ class UserController extends CI_Controller {
                 {
                     $uploaded_img= $this->upload->data();
                     $full_path = $path.$uploaded_img['file_name'];
+                    echo $full_path;
                     $data['valid_id'] = $full_path;
-                    // echo $full_path;
+                   
                 }
+            }
+            else 
+            {
+                $this->form_validation->set_rules('billing', 'Proof of Billing', 'required');
             }
 
             if(isset($_FILES['billing']['name']))
@@ -367,10 +375,14 @@ class UserController extends CI_Controller {
                 {
                     $uploaded_img= $this->upload->data();
                     $full_path = $path.$uploaded_img['file_name'];
+                    echo $full_path;
                     $data['billing'] = $full_path;
                 }
             }
-            
+            else 
+            {
+                $this->form_validation->set_rules('selfie', 'Selfie', 'required');
+            }
             if(isset($_FILES['selfie']['name']))
             {
                 $path = $config['upload_path']  = 'uploads/imgs/';
@@ -381,8 +393,13 @@ class UserController extends CI_Controller {
                 {
                     $uploaded_img= $this->upload->data();
                     $full_path = $path.$uploaded_img['file_name'];
+                    echo $full_path;
                     $data['selfie'] = $full_path;
                 }
+            }
+            else 
+            {
+                $this->form_validation->set_rules('valid_id', 'Valid ID', 'required');
             }
 
             $data['first_name'] = $this->input->post('fname');

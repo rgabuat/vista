@@ -247,4 +247,20 @@ class Admin_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function get_single_user($id)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_users');
+        $this->db->where('id',$id);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    function confirm_user($id)
+    {
+        $this->db->set('status',1);
+        $this->db->where('id',$id);
+        $this->db->update('tbl_users');
+    }
 }

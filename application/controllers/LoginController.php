@@ -26,14 +26,17 @@ public function check_user()
 
     $result = $this->Admin_model->check();
 
+    // echo var_dump($result);
+    // exit;
 
-    if(count($result) > 0 )
+    if(count($result) > 0 && $result[0]['status'] != 0)
     {
         $logged_in = array(
             'id' => $result[0]['id'],
             'email' => $this->input->post('email'),
             'is_logged_in' => true,
             'role' => $result[0]['role'],
+            'status' => $result[0]['status'],
         );
 
         $this->session->set_userdata($logged_in);
@@ -41,7 +44,6 @@ public function check_user()
         if($logged_in['role'] == 1)
         {
             redirect('dashboard');
-           
         }
         else 
         {

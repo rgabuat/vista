@@ -26,7 +26,8 @@
                         <td><?= $val->email?></td>
                         <td><?= $val->role == 1  ? 'Admin' : 'User' ?></td>
                         <td><?= $val->date_registered?></td>
-                        <td><a href="" target="blank" data-id="" data-brand="" class="fas fa-eye view-info"></a>
+                        <td><a href="<?=base_url('AdminController/admin_view_user/'.$val->id) ?>" target="blank" data-id="" data-brand="" class="fas fa-eye view-info"></a>&nbsp;&nbsp;
+                        <a href="<?=base_url('AdminController/admin_view_user/'.$val->id) ?>" target="blank" data-id="" data-brand="" class="fas fa-trash delete-info"></a>&nbsp;&nbsp;
                         </td>
                         
                         <?php ?>

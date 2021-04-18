@@ -2,7 +2,7 @@
 
 <?php echo validation_errors("<div class='alert alert-danger'>","</div>"); ?>
 
-<form action="<?= base_url('UserController/register_form')?>" method="post" >
+<form action="<?= base_url('UserController/register_form')?>" enctype="multipart/form-data" id="registerForm" method="post" >
         <p></p>
         <div class="form-group">
             <label for="fname">First name </label><span class="text-danger">*</span>
@@ -73,5 +73,44 @@
             </div>
     </fieldset>
 </form>
+
+<!-- 
+<script>
+
+$('#registerForm').on('submit',function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type:'POST',
+            url:'<= base_url('UserController/register_form')?>',
+            data:new FormData($(this)[0]),
+            dataType:'JSON',
+            contentType: false, 
+            processData: false,
+            // beforeSend:function(data)
+            // {
+            //     $('.preload').removeClass('d-none');
+            // },
+            success:function(data)
+            {   
+                console.log(data);
+                alert('Created New booking');
+                $('.preload').addClass('d-none');
+                $("#reserveForm")[0].reset();
+                // setTimeout(function(){ 
+                //     window.location.href="<?= base_url('thankyou');?>";
+                // }, 2000);
+                // load_unseen_message();
+                // console.log(load_unseen_message());
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                alert('There is an error');    
+            }
+        });
+                              
+    });
+
+
+</script> -->
 
 </div>
